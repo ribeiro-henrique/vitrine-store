@@ -1,0 +1,12 @@
+services:
+  postgres:
+    container_name: banco-dados
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: postgres
+    volumes:
+      - ./data:/data/postgres
+    ports:
+      - "5432:5432"
