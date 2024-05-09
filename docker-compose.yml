@@ -2,11 +2,30 @@ services:
   postgres:
     container_name: banco-dados
     image: postgres
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 1234
-      POSTGRES_DB: postgres
     volumes:
       - ./data:/data/postgres
+    env_file:
+      - .env.production
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
+      - PGADMIN_DEFAULT_PASSWORD=pgadmin4
     ports:
-      - "5432:5432"
+      - '5050:5050'
+    depends_on:
+      - postgres
+
+  node:
+    restart: always
+    container_name: node
+    build: ./
+    ports:
+      - 3000:3000
+    depends_on:
+      - postgres
+    env_file:
+      - .env.production
